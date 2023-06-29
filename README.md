@@ -232,6 +232,25 @@ soporte@scbi.uma.es.
 
 ### 2.3.5 - Backup policy <a id="sec_2.3.5"></a>
 
+<span style="color: red"> IMPORTANT NOTE </span>: It is important that you follow a responsible backup policy. We are 
+not liable for the loss of data stored in our systems, so if your data is important, you should have backups of it in 
+your own machine or backup system. As a courtesy we maintain a backup of the files stored in the home directory, but we 
+cannot neither warranty it nor make backups of all the space available. You can follow these backup guidelines if you 
+like:
+
+- It is a good habit to use a version control system for your own programs and scripts. Git can be a good solution 
+(https://git-scm.com/). Version control systems helps programmers to keep a tracking of all changes made to source code, 
+scripts, etc... Every time that you make a change to a file, you can save it to your version control system with some 
+textual description, and you can later see those changes at anytime or go back to an older version. 
+This is not a true backup, but a kind of.
+
+- Keep different backups, from different dates. Backup are also useful if you delete of modify a file by mistake.
+
+- Store backups in different physical places. This way, if your main computer location suffers a disaster, you could 
+access another copy that you have in another place.
+
+- Try to access your backup data periodically. You can make lots of backups, but if they are not accessible they are 
+not useful.
 
 [//]: <> (==============================================================================================================)
 [//]: <> (=============================================== SECCION ======================================================)
@@ -244,11 +263,45 @@ access is done by SSH protocol (port 22), connecting to a login server. In this 
 tools needed to prepare and send your jobs to the queue system.
 
 
+
 ## 3.1 - SSH connection <a id="sec_3.1"></a>
 
-## 3.2 - Terminal <a id="sec_3.2"></a>
+To connect to the login server you will need to enter the following command on the **system terminal** (it can be CMD or
+PowerShell in Windows, or the terminal of Linux and MacOs):
+```
+ssh <username>@picasso.scbi.uma.es
+```
+For example, if your username is *myuser*, you should enter:
+```
+myuser@picasso.scbi.uma.es
+```
+After this, you will be prompted to enter your password. When entering it, you will see that **nothing appears on the** 
+**screen**, but it is being registered. Press enter when you are done, and the connection should be established.
+
+<span style="color: red">  Warning </span>: If you fail to enter the password for several times, the system will block 
+your IP. It will be unblock after 30 minutes. If you fail serveral times again, the ip will be permanently blocked. You 
+will have to contact us to soporte@scbi.uma.es in order to get unbanned.
+
+Tip: if you have session issues and your connection brokes after a short innactivity time or because of Internet 
+connection stability; you must include a keep alive command in your connections:
+```
+ssh ServerAliveInterval=60 myuser@picasso.scbi.uma.es
+```
+
+## 3.2 - MobaXTerm <a id="sec_3.2"></a>
+
+If you are not familiar with terminals, maybe you can try to use program [MobaXTerm](https://mobaxterm.mobatek.net/). 
+It is more user fiendly and allow thing like copy a file using the mouse. 
 
 ## 3.3 - Important notice <a id="sec_3.3"></a>
+
+<span style="color: red">  IMPORTANT NOTE </span>: When you access Picasso, you are entering one of our nodes, the 
+**login node**. The login node is not a place to execute your work. It can be used for building scripts, compiling 
+programs, testing that a complex command that you are going to use in the SBATCH script is launching correctly, etc, 
+but NOT for making real work.  All launched programs will be automatically killed without previous notice when they use 
+more than 10 minutes of cpu time.
+
+Real woks must be send to the **queue system** (see section [How to send jobs](#sec_6)).
 
 
 [//]: <> (==============================================================================================================)
@@ -258,9 +311,86 @@ tools needed to prepare and send your jobs to the queue system.
 
 # 4 - Copy files from/to picasso <a id="sec_4"></a>
 
+At sometime you will need to copy files from, or into, picasso. We have to differentiate two cases: 
+
 ## 4.1 - Downloading files from internet <a id="sec_4.1"></a>
 
+In case you want to **download** a file into picasso from a url available on **internet**, you can download it using wget 
+command in picasso console:
+```
+wget <url>
+```
+For example, to download a file from the url https://www.example.com/file.txt, you have to use:
+```
+wget https://www.example.com/file.txt
+```
+It is usual that wget <url> command does not work when the file you need to download requires you to enter a password, 
+to login into some account, or to make some other action before downloading. In these cases you will need to install a 
+plugin for your web browser. This plugin will generate the complete working wget command for you. Then you will just 
+have to paste the command in picasso and wait for the download to finish. These are the steps you need to follow:
+
+1. Download and install one of these plugins depending on the web browser that you use 
+([curlwget](https://chrome.google.com/webstore/detail/curlwget/dgcfkhmmpcmkikfmonjcalnjcmjcjjdn) for chrome, 
+[cliget](https://addons.mozilla.org/es/firefox/addon/cliget/) for firefox, 
+[curlwget](https://microsoftedge.microsoft.com/addons/detail/curlwget/njimejjehbbfhipbgakbleoobdgdcmof) for edge).
+
+2. Start the download (in your computer) of the file you are interested in, then stop the download.
+
+3. Now click on the plugin icon (usually in the top right corner of your web browser).
+
+4. The complete wget command should appear. Copy the complete wget command.
+
+5. Paste it in picasso and press enter. The download should start.
+
+
+
+
 ## 4.2 - Copying files from your computer to picasso and viceversa <a id="sec_4.2"></a>
+
+### 4.2.1 - Scp command
+
+In case you need to *copy* a file from/to picasso to/from your computer, you can use the comand 
+```
+scp -r <from_path_file> <to_destination_path>
+```
+This command can be used to copy in both directions.
+
+**To copy from picasso to your computer:**
+```
+scp -r <user>@picasso.scbi.uma.es:<file_path_in_picasso> <file_local_destination>
+```
+You can obtain the path to a folder in Picasso using the comand 
+```
+pwd
+```
+You have to move to the folder you want to copy and execute this command.
+
+**To copy from your computer to picasso:**
+```
+scp <file_local_destination> <user>@picasso.scbi.uma.es:<file_destination_in_picasso>
+```
+To get its local path on your computer, you can simply click on the top bar of the file explorer and copy the path, 
+as you can see in the figure 
+<div style="text-align:center">
+<img src="Figuras/File_explorer.png" width="1000"/>
+</div>
+
+### 4.2.2 - Rsync command
+
+If you want to copy a lot of files, we recommend the use of the rsync command, is very similar to scp, but rsync can 
+skip already transferred files, so it makes a synchronization instead of a full copy. The sintax is very similar 
+
+**To copy from picasso to your computer:**
+```
+rsync -CazvHu <user>@picasso.scbi.uma.es:<file_path_in_picasso> <file_local_destination>
+```
+**To copy from your computer to picasso:**
+```
+rsync -CazvHu <file_local_destination> <user>@picasso.scbi.uma.es:<file_destination_in_picasso>
+```
+<span style="color: red">  NOTE </span>: For heavy transfers we recommend using the rsync command, since if the transfer 
+is interrupted by any reason it will skip existing files when you try to upload them again.
+
 
 
 [//]: <> (==============================================================================================================)
