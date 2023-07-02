@@ -401,6 +401,24 @@ is interrupted by any reason it will skip existing files when you try to upload 
 
 ## 5.1 - Installed software <a id="sec_5.1"></a>
 
+We have a wide variety of software installed ready to use. You can browse the updated list in our 
+[web](https://www.scbi.uma.es/site/scbi/software), or by executing this command on the login server:
+```
+module avail
+```
+Para buscar un software específico
+```
+module avail | grep -i <software>
+```
+Por ejemplo, para buscar las instalaciones de un software como el WRF (Weather Research and Forecasting), se puede usar
+el comando
+```
+module avail | grep -i wrf
+```
+
+
+
+
 ## 5.2 - Loaded software <a id="sec_5.2"></a>
 
 ## 5.3 - Compiling software <a id="sec_5.3"></a>
