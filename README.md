@@ -23,23 +23,28 @@ soporte@scbi.uma.es.
     - [3.1 - SSH connection](#sec_3.1)
     - [3.2 - Terminal](#sec_3.2)
     - [3.3 - Important notice](#sec_3.3)
-- [4 - Copy files from/to picasso](#sec_4)
-    - [4.1 - Downloading files from internet](#sec_4.1)
-    - [4.2 - Copying files from your computer to picasso and viceversa ](#sec_4.2)
-- [5 - Software](#sec_5)
-    - [5.1 - Installed software](#sec_5.1)
-    - [5.2 - Loaded software](#sec_5.2)
-    - [5.3 - Compiling software](#sec_5.3)
-- [6 - How to send jobs](#sec_6)
-    - [6.1 - Preparing to send a job](#sec_6.1)
-    - [6.2 - Modifying resources and limits](#sec_6.2)
-    - [6.3 - Asking for GPUs](#sec_6.3)
-    - [6.4 - Sample jobs generator](#sec_6.4)
-    - [6.5 - Sending a job](#sec_6.5)
-    - [6.6 - Array jobs: how to send lots of jobs](#sec_6.6)
-    - [6.7 - Monitoring queued jobs](#sec_6.7)
-    - [6.8 - Cancelling jobs](#sec_6.8)
-    - [6.9 - Using the LOCALSCRATCH filesystem](#sec_6.9)
+- [4 - How to send jobs](#sec_4)
+    - [4.1 - Preparing to send a job](#sec_4.1)
+    - [4.2 - Modifying resources and limits](#sec_4.2)
+    - [4.3 - Asking for GPUs](#sec_4.3)
+    - [4.4 - Sample jobs generator](#sec_4.4)
+    - [4.5 - Sending a job](#sec_4.5)
+    - [4.6 - Array jobs: how to send lots of jobs](#sec_4.6)
+    - [4.7 - Monitoring queued jobs](#sec_4.7)
+    - [4.8 - Cancelling jobs](#sec_4.8)
+    - [4.9 - Using the LOCALSCRATCH filesystem](#sec_4.9)
+- [5 - Copy files from/to picasso](#sec_5)
+    - [5.1 - Downloading files from internet](#sec_5.1)
+        - [5.2.1 - Scp command](#sec_5.2.1)
+        - [5.2.2 - Rsync command](#sec_5.2.2)
+    - [5.2 - Copying files from your computer to picasso and viceversa ](#sec_5.2)
+- [6 - Software](#sec_6)
+    - [6.1 - Installed software](#sec_6.1)
+    - [6.2 - Who to load/unload software](#sec_6.2)
+        - [6.2.1 - Load software](#sec_6.2.1)
+        - [6.2.2 - List the loaded software](#sec_6.2.2)
+        - [6.2.3 - Unload software](#sec_6.2.3)
+    - [6.3 - Compiling software](#sec_6.3)
 - [7 - FAQs](#sec_7)
 
 
@@ -303,17 +308,160 @@ more than 10 minutes of cpu time.
 
 Real woks must be send to the **queue system** (see section [How to send jobs](#sec_6)).
 
+[//]: <> (==============================================================================================================)
+[//]: <> (=============================================== SECCION ======================================================)
+[//]: <> (==============================================================================================================)
+
+# 4 - How to send jobs <a id="sec_4"></a>
+
+Our current queue system is **Slurm**. So any [Slurm's manual](https://slurm.schedmd.com/documentation.html) will give you 
+more detailed information about these commands. This is only a quickstart guide:
+
+## 4.1 - Preparing to send a job  <a id="sec_4.1"></a>
+
+Prior to sending a job to the queue system you only have to write a small script file with a specific format. We call 
+this script **SBATCH script*. This is where the resources are requested from the queuing system and where the execution 
+sentences are placed. This script is written in bash language (the same as in the terminal).
+
+In Picasso we have a command to generate a template for this type of scripts
+```
+gen_sbatch_file script.sh "executing_command"
+```
+This command will generate an script call "script.sh" with the command "executing_command". You only have to edit this 
+file to adjust the resources you want to request, load the modules and adjust the execution statement. In the section 
+[Modifying resources and limits](#sec_6.2) we will how to do it.
+
+Each software has its own form of calling it for solving a job, but don't panic, as you will find all the details in the 
+individual intructions, guides or readme files of each software.
+
+
+
+## 4.2 - Modifying resources and limits <a id="sec_4.2"></a>
+
+Here we are going to see who to modify the sample SBATCH script generate with the command 
+```
+gen_sbatch_file script.sh "executing_command"
+```
+If you enter this file you will see something like this:
+```
+#!/usr/bin/env bash
+# Leave only one comment symbol on selected options
+# Those with two commets will be ignored:
+# The name to show in queue lists for this job:
+##SBATCH -J script_2.sh
+
+# Number of desired cpus (can be in any node):
+#SBATCH --ntasks=1
+
+# Number of desired cpus (all in same node):
+##SBATCH --cpus-per-task=1
+
+# Amount of RAM needed for this job:
+#SBATCH --mem=2gb
+
+# The available nodes are:
+#     AMD nodes with 128 cores and 1800GB of usable RAM
+#     AMD nodes  with 128 cores and 439GB of usable RAM
+#     Intel nodes with 52  cores and 187GB of usable RAM
+
+# The time the job will be running:
+#SBATCH --time=10:00:00
+
+# If you need nodes with special features you can select a constraint.
+# Please, use cal by default. You will be assigned a node that satisfies your requests.
+#SBATCH --constraint=cal
+
+# Change "cal" by "sd" if you want to use Intel nodes and by "sr" if you want to use AMD nodes.
+##SBATCH --constraint=sd
+##SBATCH --constraint=sr
+
+# To use GPU, comment out the constraint line and uncomment the following line.
+##SBATCH --gres=gpu:1
+
+# Set output and error files
+#SBATCH --error=job.%J.err
+#SBATCH --output=job.%J.out
+
+# Leave one comment in following line to make an array job. Then N jobs will be launched. In each one SLURM_ARRAY_TASK_ID will take one value from 1 to 100
+##SBATCH --array=1-100
+
+# To load some software (you can show the list with 'module avail'):
+# module load software
+
+
+# the program to execute with its parameters:
+time executing_command
+```
+
+First of all, you have to know that in bash all the lines starting with "#" are **comments**. As you can see, almost all
+are comments. **Sentences for requesting resources to the queuing system must be commented**. They should start with 
+`#SBATCH`. If it starts with two or more '#', the sentence will be ignore. 
+
+In the previous example, the sentences to be taken into account are as follows
+- `#SBATCH --ntasks=1`: $~~$  Number of tasks (processes). If you use parallelization libraries like MPI, this number should 
+be equal to the number of MPI tasks.
+- `#SBATCH --mem=2gb`: $~~$ Total RAM requested. If the job tries to use more than this memory, it will end up with 
+an `out_of_memory` error.
+- `#SBATCH --time=10:00:00`: $~~$ Total execution time. When this time is used up, the job will be cancelled.
+- `#SBATCH --constraint=cal`: $~~$ This is to select the type of nodes on which you want to run the job. "cal" means any 
+(except GPU nodes).
+- `#SBATCH --error=job.%J.err`: $~~$ Name of the file where the error messages of the program execution will be saved 
+(%J will be replaced by the job id).
+- `#SBATCH --output=job.%J.out`: $~~$ Name of the file where the output messages of the program execution will be saved 
+(%J will be replaced by the job id).
+
+In the above example some '##' statements have been included and will be ignored. They are so in case they are 
+necessary, they can be uncommented. This sentences are
+- `##SBATCH -J script_2.sh`: $~~$ This is to change the name under which the job will appear in the queue. By default, it is 
+assigned the same name as the SBATCH script.
+- `##SBATCH --cpus-per-task=1`: $~~$ This is to change the number of CPUs requested by each task. By default 1 CPU per task 
+is assigned
+- `##SBATCH --constraint=sd`: $~~$ This is so that the job can only enter the sd (Intel) nodes.
+- `##SBATCH --constraint=sr`: $~~$ This is so that the job can only enter the sr (AMD) nodes.
+- `##SBATCH --gres=gpu:1`: $~~$ This is for requesting GPUs. First the statements must be commented with "--constraint". The 
+number at the end refers to how many GPUs are being requested. 
+- `##SBATCH --array=1-100`: $~~$ This is for using the array jobs. It will be explained in section 
+[Array jobs: how to send lots of jobs](#sec_6.6)
+
+
+<span style="color: red">  IMPORTANT NOTES: </span>
+
+- All #SBATCH commands  should go at the head of the file, without uncommented lines above them, because any SBATCH line after the first uncommented line will be ignored by slurm. 
+- Resources limits have hard policies. It means that, if you exceed requested resources, your job will be killed.
+- You can evaluate the resources that a job has effectively utilized by running ``seff id_job`` when it has already 
+finished (`seff` command doesn't work it the job is running). This will allow you to adjust resources for optimal 
+utilization (your jobs will start to solve sooner). You can also use the new 
+[online job monitor](#https://www.scbi.uma.es/slurm_monitor/admin?locale=es) for this task. In the section 
+[Monitoring queued jobs](#sec_6.7), you can find more details about it. 
+
+<span style="color: Purple">  For old users: </span> New Slurm version has changed command --cpus for --cpus-per-task. 
+You must update your scripts in order to obtain requested resources
+
+## 4.3 - Asking for GPUs <a id="sec_4.3"></a>
+
+## 4.4 - Sample jobs generator <a id="sec_4.4"></a>
+
+## 4.5 - Sending a job <a id="sec_4.5"></a>
+
+## 4.6 - Array jobs: how to send lots of jobs <a id="sec_4.6"></a>
+
+## 4.7 - Monitoring queued jobs <a id="sec_4.7"></a>
+
+## 4.8 - Cancelling jobs <a id="sec_4.8"></a>
+
+## 4.9 - Using the LOCALSCRATCH filesystem <a id="sec_4.9"></a>
+
 
 [//]: <> (==============================================================================================================)
 [//]: <> (=============================================== SECCION ======================================================)
 [//]: <> (==============================================================================================================)
 
 
-# 4 - Copy files from/to picasso <a id="sec_4"></a>
+# 5 - Copy files from/to picasso <a id="sec_5"></a>
 
 At sometime you will need to copy files from, or into, picasso. We have to differentiate two cases: 
 
-## 4.1 - Downloading files from internet <a id="sec_4.1"></a>
+## 5.1 - Downloading files from internet <a id="sec_5.1"></a>
 
 In case you want to **download** a file into picasso from a url available on **internet**, you can download it using wget 
 command in picasso console:
@@ -345,9 +493,9 @@ have to paste the command in picasso and wait for the download to finish. These 
 
 
 
-## 4.2 - Copying files from your computer to picasso and viceversa <a id="sec_4.2"></a>
+## 5.2 - Copying files from your computer to picasso and viceversa <a id="sec_5.2"></a>
 
-### 4.2.1 - Scp command
+### 5.2.1 - Scp command <a id="sec_5.2.1"></a>
 
 In case you need to *copy* a file from/to picasso to/from your computer, you can use the comand 
 ```
@@ -375,7 +523,7 @@ as you can see in the figure
 <img src="Figuras/File_explorer.png" width="1000"/>
 </div>
 
-### 4.2.2 - Rsync command
+### 5.2.2 - Rsync command <a id="sec_5.2.2"></a>
 
 If you want to copy a lot of files, we recommend the use of the rsync command, is very similar to scp, but rsync can 
 skip already transferred files, so it makes a synchronization instead of a full copy. The sintax is very similar 
@@ -397,56 +545,84 @@ is interrupted by any reason it will skip existing files when you try to upload 
 [//]: <> (=============================================== SECCION ======================================================)
 [//]: <> (==============================================================================================================)
 
-# 5 - Software <a id="sec_5"></a>
+# 6 - Software <a id="sec_6"></a>
 
-## 5.1 - Installed software <a id="sec_5.1"></a>
+## 6.1 - Available software <a id="sec_6.1"></a>
 
 We have a wide variety of software installed ready to use. You can browse the updated list in our 
-[web](https://www.scbi.uma.es/site/scbi/software), or by executing this command on the login server:
+[web](https://www.scbi.uma.es/site/scbi/software) (it can be deprecated), or by executing this command on the login 
+server (recommended):
 ```
 module avail
 ```
 Para buscar un software específico
 ```
-module avail | grep -i <software>
+module avail | grep -i software_name
 ```
-Por ejemplo, para buscar las instalaciones de un software como el WRF (Weather Research and Forecasting), se puede usar
-el comando
+For example, to search for installations of a software such as WRF (Weather Research and Forecasting), you can use the command
 ```
 module avail | grep -i wrf
 ```
 
+## 6.2 - Who to load/unload software <a id="sec_6.2"></a>
+
+### 6.2.1 - Load a software <a id="sec_6.2.1"></a>
+
+To load a module you only have to execute the command
+```
+module load software_name
+```
+You can obtain the names of the software with the commands in the previous section.
+
+For example, if you want to load the 4.4.2 version compiled for intel of WRF you have to type
+```
+module load WRF/4.4.2_intel_mpi
+```
+You must include the module load command in you SBATCH script. (It work )
+
+It also works if you run the module load in terminal before sending the job to the queuing system, but it is not 
+recommended because of its tediousness. This is because every time you access Picasso you start a "clean" session 
+(without any module loaded), so you would have to load the modules whenever you enter Picasso.
+
+If you want to execute commands directly in terminal (like opening an interpreter of one of our python versions), you 
+will have to load the module by executing it in terminal.
+
+### 6.2.2 - List the loaded software <a id="sec_6.2.2"></a>
+
+To see the packages that you have already loaded:
+```
+module list
+```
+
+### 6.2.3 - Unload software <a id="sec_6.2.3"></a>
+
+To unload any previously loaded package:
+```
+module unload software_name
+```
+For example, if you want to unload the previously loaded WRF:
+```
+module unload WRF/4.4.2_intel_mpi
+```
+You can also use the following command to unload all the software that you may have loaded. (Note: if you disconnect 
+from picasso, all the software is automatically unloaded).
+```
+module purge
+```
+
+## 6.3 - Compiling software <a id="sec_6.3"></a>
+
+To compile your own software you can use different compilers (gcc, intel, pgi,... ). Each software has its own build 
+instructions, but normally you can compile it with different compilers. 
+
+Gcc is the default, but the intel compiler can give your code some speedup. To compile using the Intel compiler you 
+should load it first:
+```
+module load intel/2022.3
+```
 
 
 
-## 5.2 - Loaded software <a id="sec_5.2"></a>
-
-## 5.3 - Compiling software <a id="sec_5.3"></a>
-
-
-[//]: <> (==============================================================================================================)
-[//]: <> (=============================================== SECCION ======================================================)
-[//]: <> (==============================================================================================================)
-
-# 6 - How to send jobs <a id="sec_6"></a>
-
-## 6.1 - Preparing to send a job  <a id="sec_6.1"></a>
-
-## 6.2 - Modifying resources and limits <a id="sec_6.2"></a>
-
-## 6.3 - Asking for GPUs <a id="sec_6.3"></a>
-
-## 6.4 - Sample jobs generator <a id="sec_6.4"></a>
-
-## 6.5 - Sending a job <a id="sec_6.5"></a>
-
-## 6.6 - Array jobs: how to send lots of jobs <a id="sec_6.6"></a>
-
-## 6.7 - Monitoring queued jobs <a id="sec_6.7"></a>
-
-## 6.8 - Cancelling jobs <a id="sec_6.7"></a>
-
-## 6.9 - Using the LOCALSCRATCH filesystem <a id="sec_6.7"></a>
 
 
 [//]: <> (==============================================================================================================)
