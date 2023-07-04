@@ -31,6 +31,8 @@ soporte@scbi.uma.es.
     - [4.5 - Sending a job](#sec_4.5)
     - [4.6 - Array jobs: how to send lots of jobs](#sec_4.6)
     - [4.7 - Monitoring queued jobs](#sec_4.7)
+        - [4.7.1 - Squeue command](#sec_4.7.1)
+        - [4.7.2 - New online job monitoring](#sec_4.7.2)
     - [4.8 - Cancelling jobs](#sec_4.8)
     - [4.9 - Using the LOCALSCRATCH filesystem](#sec_4.9)
 - [5 - Copy files from/to picasso](#sec_5)
@@ -45,7 +47,22 @@ soporte@scbi.uma.es.
         - [6.2.2 - List the loaded software](#sec_6.2.2)
         - [6.2.3 - Unload software](#sec_6.2.3)
     - [6.3 - Compiling software](#sec_6.3)
-- [7 - FAQs](#sec_7)
+- [7 - Picasso's own commands](#sec_7)
+- [8 - FAQs](#sec_8)
+    - [8.1 - How much resources should I ask for my jobs?](#sec_8.1)
+    - [8.2 - Error message: Connection refused/Network is unreachable](#sec_8.2)
+    - [8.3 - Error message: Remote host identification has changed ](#sec_8.3)
+    - [8.4 - How do I change my password?](#sec_8.4)
+    - [8.5 - Why is my process in the login node being cancelled?](#sec_8.5)
+    - [8.6 - Why is my job queued for so much time?](#sec_8.6)
+    - [8.7 - Why does my job not get the resources I asked for?](#sec_8.7)
+    - [8.8 - I need more time for my job](#sec_8.8)
+    - [8.9 - Why has my job failed?](#sec_8.9)
+    - [8.10 - Error message: cnf <command>](#sec_8.10)
+    - [8.11 - Why has my job been cancelled?](#sec_8.11)
+    - [8.12 - Error message: Out of memory handler](#sec_8.12)
+    - [8.13 - Why can't I edit nor create new files?](#sec_8.13)
+    - [8.14 - I need more space or file quota](#sec_8.14)
 
 
 [//]: <> (==============================================================================================================)
@@ -111,13 +128,9 @@ InfiniBand HDR200 network. 14 TB of localscratch
 
 Both the operating system and the file system require part of the resources (RAM) available on the nodes. For this 
 reason, the resources (CPUs, RAM) that can be requested for each node through the queuing system are as follows:
-
 - **sd nodes**: CPUs: 52 cores. RAM: 182 GB
-
 - **bl nodes**: CPUs: 128 cores. RAM: 1855 GB
-
 - **sr nodes**: CPUs: 128 cores. RAM: 439 GB
-
 - **exa (GPU) nodes**: CPUs: 128 cores. RAM: 878 GB
 
 <span style="color: red"> IMPORTANT </span>: The resources of the Exa nodes are distributed among the 8 GPUs of each 
@@ -133,7 +146,6 @@ node, so in ideal usage no more than 16 cores and 109 GB of RAM should be reques
 
 The Picasso filesystem is divided in two physically independent spaces. In both of them, as a user of picasso, you will 
 get some disk quota. The quota determines the disk limits for your user.
-
 - **HOME** (*Permanent storage system*): Here you should store input data, your own developed scripts, final results, 
 and other important data. To go to your home space you can enter one of the following commands:
 
@@ -146,14 +158,13 @@ and other important data. To go to your home space you can enter one of the foll
 ```
     cd $HOME
 ```
-
 - **FSCRATCH** (*Temporal storage system*): FSCRATCH is a very high speed storage in which you should launch your work.
 You can find relevant information about using FSCRATCH in section [Fast scratch filesystem (FSCRATCH)](#sec_2.3.3). 
 Be aware that FSCRATCH is a temporary storage, and old files will be deleted periodically. 
 <span style="color: red">  PLEASE, DO NOT USE IT TO STORE IMPORTANT DATA </span>. 
 To go to your fscratch space you can enter:
 
-```
+```console
     cd $FSCRATCH
 ```
 
@@ -166,10 +177,8 @@ the space quota determines the limitation in terms of gigabytes written, the fil
 terms of number of files written.
 
 The quota works in two steps, that are called soft quota and hard quota: 
-
 - **Soft quota**:  When you exceed your quota, you will receive a warning message every time you log into picasso, 
 In the figure below, you can see an example of someone exceeding the soft quota of free space.
-
 <div style="text-align:center">
 <img src="Figuras/Cuota_7_dias.png" width="1000"/>
 </div>
@@ -248,12 +257,9 @@ like:
 scripts, etc... Every time that you make a change to a file, you can save it to your version control system with some 
 textual description, and you can later see those changes at anytime or go back to an older version. 
 This is not a true backup, but a kind of.
-
 - Keep different backups, from different dates. Backup are also useful if you delete of modify a file by mistake.
-
 - Store backups in different physical places. This way, if your main computer location suffers a disaster, you could 
 access another copy that you have in another place.
-
 - Try to access your backup data periodically. You can make lots of backups, but if they are not accessible they are 
 not useful.
 
@@ -439,17 +445,227 @@ You must update your scripts in order to obtain requested resources
 
 ## 4.3 - Asking for GPUs <a id="sec_4.3"></a>
 
+As briefly discussed in the previous section, to order GPUs, the "--constrain" lines must be commented (with two '##'):
+```
+##SBATCH --constraint=cal
+```
+and the line 
+```
+#SBATCH --gres=gpu:1
+```
+must be uncomented (only one '#'). If you want to use more than one GPU, just change the "1" for another number. 
+Remember that our exa nodes have 8 GPUs each.
+
+
 ## 4.4 - Sample jobs generator <a id="sec_4.4"></a>
+
+We also have written a tool that generates a complete sample job for some softwares. You can see a list of available 
+sample jobs with this command:
+```
+gen_sample_job | grep -v NO
+```
+When you have located the desired sample job, you can generate it with the following command:
+```
+gen_sample_job <sofware> <output_foler>
+```
+Where `<software>` is the desired software without the version, and `<output_folder>` is the folder that will be created
+to contain the sh script and other needed files. For example, if you wanted to create a sample job for the software 
+Gaussian in a new folder called gaussian_job, you should enter:
+```
+gen_sample_job gaussian gaussian_job
+```
+<span style="color: Red">  Nota: </span> We do not have many examples and most of them may be old.
 
 ## 4.5 - Sending a job <a id="sec_4.5"></a>
 
+When you have a modified version of the script.sh file adapted to your needs, you are ready to send it to the queue 
+system. For doing so, you just have to enter:
+```
+sbatch script.sh
+```
+Now, the job has been received by the queue system, who will look for the resources requested. Once the resources are 
+available, the job will begin.
+
+In the section "Monitoring queued jobs" you will learn how to monitor the state of your jobs. This way, you will know if
+the job is still looking for a place to be executed (queued) or if it is already running.
+
+
+<span style="color: Red">  Important Note: </span> You will notice that if you requested resources adapted to your needs 
+(and not in excess), your job will begin much faster, as it will find a place to be executed much easier. Also bear in 
+mind that if you request lesser resources than what your job will need, the job will be immediately killed as soon as 
+the resources are exceeded by the software.
+
+
 ## 4.6 - Array jobs: how to send lots of jobs <a id="sec_4.6"></a>
+
+When you need to send a bunch of jobs that executes the same command over different data, you can make use of array jobs.
+Array jobs are now a native option of slurm, so you will find advanced information about them in 
+[slurm's manuals](https://slurm.schedmd.com/job_array.html).
+
+To use array jobs, you only need to do a few changes to the script file. At first, remove one comment symbol from the 
+`--array` line (leaving it only with one comment simbol '#'):
+```
+# Leave one comment in following line to make an array job. Then N jobs will be launched. In each one SLURM_ARRAY_TASK_ID will take one value from 1 to 100
+#SBATCH --array=1-100
+```
+In this way, Slurm will send 100 job, with the only difference that the enviromental variable `SLURM_ARRAY_TASK_ID` 
+varies from 1 to 100. One way to use it to pass different data files to the program for each run is to name the files in
+the form "data_0, data_1,..., data_100" and call the program in the form
+```
+time my_command data_${SLURM_ARRAY_TASK_ID}
+```
+
+You can also choose some specific values to this variable, for example `7,55,87,95,4,2`:
+```
+#SBATCH --array=7,55,87,95,4,2
+```
+
+After these modifications, you have to send it to the queue system, using the normal sbatch command:
+```
+sbatch script.sh
+```
+
+<span style="color: Red">  Nota: If you are going to send an arrayjob bigger than 1000 jobs for the first time, please, 
+contact us first. </span>
+
 
 ## 4.7 - Monitoring queued jobs <a id="sec_4.7"></a>
 
+### 4.7.1 - Squeue command <a id="sec_4.7.1"></a>
+
+At any time, you can monitor the queue of jobs by issuing this command:
+```
+squeue
+```
+By default squeue shows jobs in short format (grouping array jobs together). If you need to access the long format, 
+use the `-l` flag:
+```
+squeue -l
+```
+
+### 4.7.2 - New online job monitor <a id="sec_4.7.2"></a>
+
+For more detailed information about your running jobs, you can access the new online job monitor. This utility will show 
+you details in real time about the number of CPUs and amount of RAM being used, and also the GPU and VRAM usage if it is 
+the case. For using the online monitor follow these instructions:
+
+1. Enter https://www.scbi.uma.es/slurm_monitor/admin/login
+2. Login with your picasso user credentials
+3. You will see a list of all of your running or finished jobs
+4. By using the first row controls you can sort the jobs by any column
+5. When using the filters on the right, only the jobs you are interested in will be shown
+6. Click on the desired job
+7. You will see more details at the top, and real time graphics below
+8. By clicking on the different items of the legend you can hide or show their corresponding graph
+    - System: It can be an indicator of disk usage. If it is high you should use localscratch
+    - New proc: A vertical line will show up every time a new proccess has been detected. It is useful when you use 
+    multiple programs in your script.
+    - Reserved cores: Horizontal line with the cores that were asked.
+    - Reserved RAM: Horizontal line with the GB of RAM that were asked.
+    - RAM: RAM actually used.
+    - Cores: CPU cores actually used.
+
+Remember that if you adjust your asked resources to the ones that you can actually use, your job will begin to solve 
+sooner as it will find faster a place to be executed. Also, more resources will be available for other users in picasso.
+
+
 ## 4.8 - Cancelling jobs <a id="sec_4.8"></a>
 
+At some times, you will want to cancel a job that is already running or queued. To do so, you only have to take the job 
+id number (first column shown in squeue), and issue this command:
+```
+scancel <JOBID>
+```
+where `<JOBID>` is the number of the job that will be cancelled.
+
+To cancel only some jobs of an array job, use this format:
+```
+scancel <JOBID>_[1-50]
+```
+In that example, you would have cancelled the jobs 1 to 50 from the array job with id JOBID
+
 ## 4.9 - Using the LOCALSCRATCH filesystem <a id="sec_4.9"></a>
+
+By default, you can work and create temporary files on your normal $FSCRATCH filesystem, but sometimes you may need to 
+use a program that generates thousands and thousands of temporary files very fast. That is not a good citizen behaviour 
+for shared file systems, since each small file creation do a few requests to the shared storage to get completed. 
+If there are thousands of them, they can hog the system at some point.
+
+In this extreme cases, it is mandatory to use the $LOCALSCRATCH filesystem. In less extreme situations, in which 
+software executes large I/O operations, you can also take advantage of the speed up that the Localscratch filesystem 
+provides. As seen in the hardware section, all machines have at least 900GB of localscratch. 
+**For high localscratch usage, please contact us first.**
+
+The localscratch filesystem is independent to each node, and thus, it is not shared between nodes and it's not accesible 
+from the login machines. Because of that, you have to understand how to copy your data there, use it, and later on, 
+retrieving the important results back to your home (all done inside the sbatch script). Here you can find an example 
+that could help you in this tasks. Feel free to contact us if you have any questions.
+
+```
+#!/usr/bin/env bash
+# Leave only one comment symbol on selected options
+# Those with two commets will be ignored:
+# The name to show in queue lists for this job:
+##SBATCH -J script_2.sh
+
+# Number of desired cpus (can be in any node):
+#SBATCH --ntasks=1
+
+# Number of desired cpus (all in same node):
+##SBATCH --cpus-per-task=1
+
+# Amount of RAM needed for this job:
+#SBATCH --mem=2gb
+
+# The available nodes are:
+#     AMD nodes with 128 cores and 1800GB of usable RAM
+#     AMD nodes  with 128 cores and 439GB of usable RAM
+#     Intel nodes with 52  cores and 187GB of usable RAM
+
+# The time the job will be running:
+#SBATCH --time=10:00:00
+
+# If you need nodes with special features you can select a constraint.
+# Please, use cal by default. You will be assigned a node that satisfies your requests.
+#SBATCH --constraint=cal
+
+# Change "cal" by "sd" if you want to use Intel nodes and by "sr" if you want to use AMD nodes.
+##SBATCH --constraint=sd
+##SBATCH --constraint=sr
+
+# To use GPU, comment out the constraint line and uncomment the following line.
+##SBATCH --gres=gpu:1
+
+# Set output and error files
+#SBATCH --error=job.%J.err
+#SBATCH --output=job.%J.out
+
+# Leave one comment in following line to make an array job. Then N jobs will be launched. In each one SLURM_ARRAY_TASK_ID will take one value from 1 to 100
+##SBATCH --array=1-100
+
+# To load some software (you can show the list with 'module avail'):
+# module load software
+
+# create a temp dir in localscratch
+MYLOCALSCRATCH=$LOCALSCRATCH/$USER/$SLURM_JOB_ID
+mkdir -p $MYLOCALSCRATCH
+
+# execute there the program
+cd $MYLOCALSCRATCH
+time program1 $HOME/data/data1 > results
+
+#copy some results back to home
+cp -rp your_results $HOME/place_to_store_results
+
+#remove your localscratch files:
+
+if cd $LOCALSCRATCH/$USER; then
+if [ -z "$MYLOCALSCRATCH" ]; then
+rm -rf --one-file-system $MYLOCALSCRATCH
+fi
+fi
+```
+
 
 
 [//]: <> (==============================================================================================================)
@@ -481,13 +697,9 @@ have to paste the command in picasso and wait for the download to finish. These 
 ([curlwget](https://chrome.google.com/webstore/detail/curlwget/dgcfkhmmpcmkikfmonjcalnjcmjcjjdn) for chrome, 
 [cliget](https://addons.mozilla.org/es/firefox/addon/cliget/) for firefox, 
 [curlwget](https://microsoftedge.microsoft.com/addons/detail/curlwget/njimejjehbbfhipbgakbleoobdgdcmof) for edge).
-
 2. Start the download (in your computer) of the file you are interested in, then stop the download.
-
 3. Now click on the plugin icon (usually in the top right corner of your web browser).
-
 4. The complete wget command should appear. Copy the complete wget command.
-
 5. Paste it in picasso and press enter. The download should start.
 
 
@@ -555,7 +767,7 @@ server (recommended):
 ```
 module avail
 ```
-Para buscar un software específico
+To search for a specific software
 ```
 module avail | grep -i software_name
 ```
@@ -621,7 +833,23 @@ should load it first:
 module load intel/2022.3
 ```
 
+# 7 - Picasso's own commands <a id="sec_7"></a>
 
+From the Picasso support team we have developed a series of commands to help users. These are as follows
+
+- `count_files`:  This command will return the number of files inside the folders of the current directory.
+- `free_gpus.sh`: This command will show you the avaliable GPUs
+- `resource_efficiency`: This command generate the graph that you can se when you enter Picasso. It shows you the 
+percentage of CPU and RAM used with respect to the total requested for the last 5 jobs that have 
+**successfully completed**. You can also generate the graph for the jobs you want by passing the ids of the jobs to the 
+command:
+    ```
+    resource_efficiency job_id job_id job_id job_id job_id
+    ```
+    You can also see the help message with 
+    ```
+    resource_efficiency -h 
+    ```
 
 
 
@@ -629,5 +857,136 @@ module load intel/2022.3
 [//]: <> (=============================================== SECCION ======================================================)
 [//]: <> (==============================================================================================================)
 
-# 7 - FAQs <a id="sec_7"></a>
+# 8 - FAQs <a id="sec_8"></a>
 
+This section contains answers to Frequently Asked Questions: 
+
+## 8.1 - How much resources should I ask for my jobs? <a id="sec_8.1"></a>
+
+It is important that the resources are adjusted to your needs. Too little resources will end up in cancelled jobs, and 
+too much resources will end up increasing the time that your job needs to find a place to be executed, also resulting in 
+lesser resources free for other users.
+
+You can use the [new online job monitor](#https://www.scbi.uma.es/slurm_monitor/admin?locale=es) (explained in the 
+subsection "[Monitoring queued jobs](#sec_4.7)") to evaluate if you are using the resources correctly.
+
+Even if you are using all the cores you asked for, it does not have to mean that they are being correctly used. Some 
+programs does not scale well.
+
+As an example, there are programs that using 64 cores solve the problems nearly as twice as fast as when using 32 cores. 
+Nevertheless, other programs are not that good, and can only improve the speed by a 10% in such a scenario, or even last 
+more with 64 cores than with 32!
+
+If you experiment this kind of problem, or if you need help adjusting the resources, prepare a job example that last 
+about 2 hours to finish and conctact us at `soport@scbi.uma.es`
+
+## 8.2 - Error message: Connection refused/Network is unreachable <a id="sec_8.2"></a>
+
+If you receive this error message, your IP has been blocked because of too many failed login attemps. If you have not 
+been automatically unbanned in 30 minutes, please contact us at `soporte@scbi.uma.es`
+
+
+## 8.3 - Error message: Remote host identification has changed <a id="sec_8.3"></a>
+
+If you see a message with some of these texts: "Remote host identification has changed"; "It is possible that someone is 
+doing something nasty". Can be for several security breachs but, we have changed our fingerprint recently (July 2021). 
+If you have not connected since this date, you must remove the old key and use the new one. To do this, please read the 
+full warning message and you will identificate a text that says "You can use following command to remove the offending 
+key:". After that, a command you must run is shown with your personal path to SSH keys. In a linux system it will be 
+pre-assumable as:
+```
+ssh-keygen -R picasso.scbi.uma.es -f <yourPath>
+```
+
+
+## 8.4 - How do I change my password? <a id="sec_8.4"></a>
+
+If you already know your password and you want to change it. You can achieve it by using the command:
+```
+passwd
+```
+It will ask you about your current password. Then, new password will be asked twice, and a successful change message 
+will be eventually shown.
+
+## 8.5 - Why is my process in the login node being cancelled? <a id="sec_8.5"></a>
+
+The login machine is not a place to execute your work. It can be used for building scripts, compiling programs, testing 
+that a complex command that you are going to use in the SBATCH script is launching correctly, etc. but NOT for making 
+real work. All launched programs will be automatically killed without previous notice when they use more than 10 minutes 
+of cpu time.
+
+
+## 8.6 - Why is my job queued for so much time? <a id="sec_8.6"></a>
+
+It is probably due to the resources that you ask are excessive. You will notice that if you requested resources adapted 
+to your needs (and not in excess), your job will begin much faster, as it will find a place to be executed much easier. 
+Also bear in mind that if you request lesser resources than what your job will need, the job will be immediately killed 
+as soon as the resources are exceeded by the software.
+
+If you asked for GPUs for your job, you can check the currently free GPUs available issuing:
+```
+free_gpus.sh
+```
+
+
+## 8.7 - Why does my job not get the resources I asked for? <a id="sec_8.7"></a>
+
+All SBATCH pragram lines (for example #SBATCH --ntasks=8) should go at the head of the file, without uncommented lines 
+above them, because any SBATCH line after the first uncommented line will be ignored by slurm. Probably this happened to 
+your sbatch file.
+
+## 8.8 - I need more time for my job <a id="sec_8.8"></a>
+
+Users have a time limit of 3 or 7 days of maximum job timeframe. Asking for more than 3 days is risky, given that the 
+possibility of any kind of error increases with time.
+
+If even with 7 days it is not enough for your job, it clearly needs some optimization (parallelism, division, change of 
+software, overall rethink, etc.). You can contact us at `soporte@scbi.uma.es` if you need help for this task.
+
+## 8.9 - Why has my job failed? <a id="sec_8.9"></a>
+
+You can take a look at the error and output log files to get clues about what happened.
+The "Command not found" error is shown when picasso is unable to find the command you try to execute. It is commonly 
+caused by forgetting to include a module load command prior to the call of the software concerned.
+
+
+## 8.10 - Error message: cnf <command> <a id="sec_8.10"></a>
+
+If your job tried to use more resources than what you requested, the job will be automatically cancelled. In the case 
+that it was hogging the system in a way that interferes with other users' jobs or if the resources reserved for it were 
+dramatically underused, we will cancel it manually.
+
+## 8.11 - Why has my job been cancelled? <a id="sec_8.11"></a>
+
+If your job tried to use more resources than what you requested, the job will be automatically cancelled. In the case 
+that it was hogging the system in a way that interferes with other users' jobs or if the resources reserved for it were 
+dramatically underused, we will cancel it manually.
+
+## 8.12 - Error message: Out of memory handler <a id="sec_8.12"></a>
+
+If your job tried to use more RAM than what you requested, the job will be automatically cancelled. Please, increase the
+amount of RAM requested in your sbatch file and confirm it follows the structure #SBATCH `--mem=2gb`
+
+## 8.13 - Why can't I edit nor create new files? <a id="sec_8.13"></a>
+
+Probably you exceeded the quota. Use the 
+```
+mmlsquota
+``` 
+for checking it. Remember that you can reach both soft of hard quota because of the number of files written or because 
+of the size of these files. When you removed enough files, you will be back able to create and edit files. For more 
+information refer to the "[File system](#sec_2.3)" section.
+
+If you did not exceed your quota, then, you might be trying to write in a folder, or edit a file in which you don't 
+have the write permission.
+
+## 8.14 - I need more space or file quota <a id="sec_8.14"></a>
+
+Remember that you have two separate locations for your files, the $HOME (where you should store input data, your own 
+developed scripts, final results, and other important data) and the $FSCRATCH (where you should launch your work).
+
+Verify that you don't preserve any unwanted old files, and remove them if so. If you need to increase the quota because 
+of some conda / python package, you should know that you don't have to install the complete environment in your user. It 
+is enough to issue module load anaconda and then pip install only for the rest of packages that are not in the module.
+
+If any of the above helps you, you can contact us at `soporte@scbi.uma.es`
