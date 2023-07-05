@@ -320,8 +320,8 @@ Real woks must be send to the **queue system** (see section [How to send jobs](#
 
 # 4 - How to send jobs <a id="sec_4"></a>
 
-Our current queue system is **Slurm**. So any [Slurm's manual](https://slurm.schedmd.com/documentation.html) will give you 
-more detailed information about these commands. This is only a quickstart guide:
+Our current queue system is **Slurm**. So any <a href="https://slurm.schedmd.com/documentation.html" target="_blank">Slurm's manual</a>
+will give you more detailed information about these commands. This is only a quickstart guide:
 
 ## 4.1 - Preparing to send a job  <a id="sec_4.1"></a>
 
