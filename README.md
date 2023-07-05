@@ -102,7 +102,7 @@ special characteristics like a more memory or gpus are scarse, and because of th
 
 Once you have your script written, you have to send it to the **queue system**. Then the queue system will analyze your 
 request and send the job to the appropriate computers. There are some examples in chapter 
-[How to send jobs](#sec_6). If you have any question, please, don't hesitate in contacting us at 
+[How to send jobs](#sec_4). If you have any question, please, don't hesitate in contacting us at 
 soporte@scbi.uma.es and we will do our best to try to help you.
 
 
@@ -239,7 +239,7 @@ environment variable).
 
 The local scratch is very fast, and may speed up some jobs substantially when used. And it's a must when a job needs to 
 write lots of files or to make an intense disk usage.  You can also find an example in the section 
-[How to send jobs](#sec_6).
+[How to send jobs](#sec_4).
 
 If you think you need access to local scratch and you are not sure how to use it, please contact us to 
 soporte@scbi.uma.es.
@@ -312,7 +312,7 @@ programs, testing that a complex command that you are going to use in the SBATCH
 but NOT for making real work.  All launched programs will be automatically killed without previous notice when they use 
 more than 10 minutes of cpu time.
 
-Real woks must be send to the **queue system** (see section [How to send jobs](#sec_6)).
+Real woks must be send to the **queue system** (see section [How to send jobs](#sec_4)).
 
 [//]: <> (==============================================================================================================)
 [//]: <> (=============================================== SECCION ======================================================)
@@ -335,7 +335,7 @@ gen_sbatch_file script.sh "executing_command"
 ```
 This command will generate an script call "script.sh" with the command "executing_command". You only have to edit this 
 file to adjust the resources you want to request, load the modules and adjust the execution statement. In the section 
-[Modifying resources and limits](#sec_6.2) we will how to do it.
+[Modifying resources and limits](#sec_4.2) we will how to do it.
 
 Each software has its own form of calling it for solving a job, but don't panic, as you will find all the details in the 
 individual intructions, guides or readme files of each software.
@@ -427,7 +427,7 @@ is assigned
 - `##SBATCH --gres=gpu:1`: $~~$ This is for requesting GPUs. First the statements must be commented with "--constraint". The 
 number at the end refers to how many GPUs are being requested. 
 - `##SBATCH --array=1-100`: $~~$ This is for using the array jobs. It will be explained in section 
-[Array jobs: how to send lots of jobs](#sec_6.6)
+[Array jobs: how to send lots of jobs](#sec_4.6)
 
 
 <span style="color: red">  IMPORTANT NOTES: </span>
@@ -438,7 +438,7 @@ number at the end refers to how many GPUs are being requested.
 finished (`seff` command doesn't work it the job is running). This will allow you to adjust resources for optimal 
 utilization (your jobs will start to solve sooner). You can also use the new 
 [online job monitor](#https://www.scbi.uma.es/slurm_monitor/admin?locale=es) for this task. In the section 
-[Monitoring queued jobs](#sec_6.7), you can find more details about it. 
+[Monitoring queued jobs](#sec_4.7), you can find more details about it. 
 
 <span style="color: Purple">  For old users: </span> New Slurm version has changed command --cpus for --cpus-per-task. 
 You must update your scripts in order to obtain requested resources
