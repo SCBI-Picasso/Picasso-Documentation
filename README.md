@@ -1,4 +1,4 @@
-# Picasso Documentation
+# User's manual
 
 This is the official documentation for Picasso supercomputer usage. If you have any problem that is not specified on 
 this documentation or in the [frequently asked questions](#sec_7) section please, contact us at 
