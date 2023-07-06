@@ -301,7 +301,8 @@ ssh ServerAliveInterval=60 myuser@picasso.scbi.uma.es
 
 ## 3.2 - MobaXTerm <a id="sec_3.2"></a>
 
-If you are not familiar with terminals, maybe you can try to use program [MobaXTerm](https://mobaxterm.mobatek.net/). 
+If you are not familiar with terminals, maybe you can try to use program 
+<a href="https://mobaxterm.mobatek.net/" target="_blank">MobaXTerm</a>. 
 It is more user fiendly and allow thing like copy a file using the mouse. 
 
 ## 3.3 - Important notice <a id="sec_3.3"></a>
@@ -404,29 +405,29 @@ are comments. **Sentences for requesting resources to the queuing system must be
 `#SBATCH`. If it starts with two or more '#', the sentence will be ignore. 
 
 In the previous example, the sentences to be taken into account are as follows
-- `#SBATCH --ntasks=1`: $~~$  Number of tasks (processes). If you use parallelization libraries like MPI, this number should 
+- `#SBATCH --ntasks=1`: &nbsp;  Number of tasks (processes). If you use parallelization libraries like MPI, this number should 
 be equal to the number of MPI tasks.
-- `#SBATCH --mem=2gb`: $~~$ Total RAM requested. If the job tries to use more than this memory, it will end up with 
+- `#SBATCH --mem=2gb`: &nbsp; Total RAM requested. If the job tries to use more than this memory, it will end up with 
 an `out_of_memory` error.
-- `#SBATCH --time=10:00:00`: $~~$ Total execution time. When this time is used up, the job will be cancelled.
-- `#SBATCH --constraint=cal`: $~~$ This is to select the type of nodes on which you want to run the job. "cal" means any 
+- `#SBATCH --time=10:00:00`: &nbsp; Total execution time. When this time is used up, the job will be cancelled.
+- `#SBATCH --constraint=cal`: &nbsp; This is to select the type of nodes on which you want to run the job. "cal" means any 
 (except GPU nodes).
-- `#SBATCH --error=job.%J.err`: $~~$ Name of the file where the error messages of the program execution will be saved 
+- `#SBATCH --error=job.%J.err`: &nbsp; Name of the file where the error messages of the program execution will be saved 
 (%J will be replaced by the job id).
-- `#SBATCH --output=job.%J.out`: $~~$ Name of the file where the output messages of the program execution will be saved 
+- `#SBATCH --output=job.%J.out`: &nbsp; Name of the file where the output messages of the program execution will be saved 
 (%J will be replaced by the job id).
 
 In the above example some '##' statements have been included and will be ignored. They are so in case they are 
 necessary, they can be uncommented. This sentences are
-- `##SBATCH -J script_2.sh`: $~~$ This is to change the name under which the job will appear in the queue. By default, it is 
+- `##SBATCH -J script_2.sh`: &nbsp; This is to change the name under which the job will appear in the queue. By default, it is 
 assigned the same name as the SBATCH script.
-- `##SBATCH --cpus-per-task=1`: $~~$ This is to change the number of CPUs requested by each task. By default 1 CPU per task 
+- `##SBATCH --cpus-per-task=1`: &nbsp; This is to change the number of CPUs requested by each task. By default 1 CPU per task 
 is assigned
-- `##SBATCH --constraint=sd`: $~~$ This is so that the job can only enter the sd (Intel) nodes.
-- `##SBATCH --constraint=sr`: $~~$ This is so that the job can only enter the sr (AMD) nodes.
-- `##SBATCH --gres=gpu:1`: $~~$ This is for requesting GPUs. First the statements must be commented with "--constraint". The 
+- `##SBATCH --constraint=sd`: &nbsp; This is so that the job can only enter the sd (Intel) nodes.
+- `##SBATCH --constraint=sr`: &nbsp; This is so that the job can only enter the sr (AMD) nodes.
+- `##SBATCH --gres=gpu:1`: &nbsp; This is for requesting GPUs. First the statements must be commented with "--constraint". The 
 number at the end refers to how many GPUs are being requested. 
-- `##SBATCH --array=1-100`: $~~$ This is for using the array jobs. It will be explained in section 
+- `##SBATCH --array=1-100`: &nbsp; This is for using the array jobs. It will be explained in section 
 [Array jobs: how to send lots of jobs](#sec_4.6)
 
 
@@ -436,8 +437,9 @@ number at the end refers to how many GPUs are being requested.
 - Resources limits have hard policies. It means that, if you exceed requested resources, your job will be killed.
 - You can evaluate the resources that a job has effectively utilized by running ``seff id_job`` when it has already 
 finished (`seff` command doesn't work it the job is running). This will allow you to adjust resources for optimal 
-utilization (your jobs will start to solve sooner). You can also use the new 
-[online job monitor](#https://www.scbi.uma.es/slurm_monitor/admin?locale=es) for this task. In the section 
+utilization (your jobs will start to solve sooner). You can also use the new
+<a href="https://www.scbi.uma.es/slurm_monitor/admin?locale=es" target="_blank">online job monitor</a>
+for this task. In the section 
 [Monitoring queued jobs](#sec_4.7), you can find more details about it. 
 
 <span style="color: Purple">  For old users: </span> New Slurm version has changed command --cpus for --cpus-per-task. 
@@ -500,7 +502,7 @@ the resources are exceeded by the software.
 
 When you need to send a bunch of jobs that executes the same command over different data, you can make use of array jobs.
 Array jobs are now a native option of slurm, so you will find advanced information about them in 
-[slurm's manuals](https://slurm.schedmd.com/job_array.html).
+<a href="https://slurm.schedmd.com/documentation.html" target="_blank">Slurm's manual</a>.
 
 To use array jobs, you only need to do a few changes to the script file. At first, remove one comment symbol from the 
 `--array` line (leaving it only with one comment simbol '#'):
@@ -694,9 +696,12 @@ plugin for your web browser. This plugin will generate the complete working wget
 have to paste the command in picasso and wait for the download to finish. These are the steps you need to follow:
 
 1. Download and install one of these plugins depending on the web browser that you use 
-([curlwget](https://chrome.google.com/webstore/detail/curlwget/dgcfkhmmpcmkikfmonjcalnjcmjcjjdn) for chrome, 
-[cliget](https://addons.mozilla.org/es/firefox/addon/cliget/) for firefox, 
-[curlwget](https://microsoftedge.microsoft.com/addons/detail/curlwget/njimejjehbbfhipbgakbleoobdgdcmof) for edge).
+(<a href="https://chrome.google.com/webstore/detail/curlwget/dgcfkhmmpcmkikfmonjcalnjcmjcjjdn" target="_blank">curlwget</a>
+for chrome, 
+<a href="https://addons.mozilla.org/es/firefox/addon/cliget/" target="_blank">cliget</a>
+[]() for firefox, 
+<a href="https://microsoftedge.microsoft.com/addons/detail/curlwget/njimejjehbbfhipbgakbleoobdgdcmof" target="_blank">curlwget</a>
+for edge).
 2. Start the download (in your computer) of the file you are interested in, then stop the download.
 3. Now click on the plugin icon (usually in the top right corner of your web browser).
 4. The complete wget command should appear. Copy the complete wget command.
@@ -762,7 +767,8 @@ is interrupted by any reason it will skip existing files when you try to upload 
 ## 6.1 - Available software <a id="sec_6.1"></a>
 
 We have a wide variety of software installed ready to use. You can browse the updated list in our 
-[web](https://www.scbi.uma.es/site/scbi/software) (it can be deprecated), or by executing this command on the login 
+<a href="https://www.scbi.uma.es/site/scbi/software" target="_blank">web</a>
+(it can be deprecated), or by executing this command on the login 
 server (recommended):
 ```
 module avail
@@ -867,8 +873,8 @@ It is important that the resources are adjusted to your needs. Too little resour
 too much resources will end up increasing the time that your job needs to find a place to be executed, also resulting in 
 lesser resources free for other users.
 
-You can use the [new online job monitor](#https://www.scbi.uma.es/slurm_monitor/admin?locale=es) (explained in the 
-subsection "[Monitoring queued jobs](#sec_4.7)") to evaluate if you are using the resources correctly.
+You can use the <a href="https://www.scbi.uma.es/slurm_monitor/admin?locale=es" target="_blank">online job monitor</a>
+(explained in the subsection "[Monitoring queued jobs](#sec_4.7)") to evaluate if you are using the resources correctly.
 
 Even if you are using all the cores you asked for, it does not have to mean that they are being correctly used. Some 
 programs does not scale well.
