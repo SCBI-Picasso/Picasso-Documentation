@@ -191,9 +191,12 @@ or the hard quota is reached, the disk writing will be blocked.
 
 In order to check your quotas, you can run the command:
 ```
+quota
+```
+or 
+```
 mmlsquota
 ```
-
 
 ### 2.3.3 - Fast scratch filesystem (FSCRATCH) and purging policy <a id="sec_2.3.3"></a>
 
