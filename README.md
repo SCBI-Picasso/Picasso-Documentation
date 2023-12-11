@@ -75,8 +75,8 @@ soporte@scbi.uma.es.
 
 If you use our resources, you must acknowledge this service on your publications. Please, add a text like this:
 
-    The authors thank the Supercomputing and Bioinnovation Center (SCBI) of the University of Malaga for their provision 
-    of computational resources (the supercomputer PIcasso) and technical support (www.scbi.uma.es/site)
+    The author thankfully acknowledges the computer resources, technical expertise and assistance 
+    provided by the SCBI (Supercomputing and Bioinformatics) center of the University of Malaga"
 
 We would appreciate if you could inform us of your publications that used our resources, and we will take the opportunity
 to congratulate you.
