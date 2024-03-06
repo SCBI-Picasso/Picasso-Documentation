@@ -432,6 +432,7 @@ assigned the same name as the SBATCH script.
 is assigned
 - `##SBATCH --constraint=sd`: &nbsp; This is so that the job can only enter the sd (Intel) nodes.
 - `##SBATCH --constraint=sr`: &nbsp; This is so that the job can only enter the sr (AMD) nodes.
+- `##SBATCH --constraint=bc`: &nbsp; This is so that the job can only enter the bc (AMD) nodes.
 - `##SBATCH --gres=gpu:1`: &nbsp; This is for requesting GPUs. First the statements must be commented with "--constraint". The 
 number at the end refers to how many GPUs are being requested. 
 - `##SBATCH --array=1-100`: &nbsp; This is for using the array jobs. It will be explained in section 
