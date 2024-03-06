@@ -121,8 +121,11 @@ InfiniBand HDR200 network. 3.5 TB of localscratch disks.
 - **sr nodes**: 156 x Lenovo SR645 nodes: 128 cores (AMD EPYC 7H12 @ 2.6GHz), 512 GB of RAM. 
 InfiniBand HDR100 network. 900 GB of localscratch disks.
 
+- **bc nodes**: 34 x Lenovo SR645 v3 nodes: 256 cores (AMD EPYC 9754 @ 2.25GHz), 768 GB of RAM.
+InfiniBand 2x HDR200 network. 4 TB of localscratch disks.
+
 - **exa (GPU) nodes**: 4 x DGX-A100 nodes: 8 GPUs (Nvidia A100), 1 TB of RAM. 
-InfiniBand HDR200 network. 14 TB of localscratch
+InfiniBand HDR200 network. 14 TB of localscratch disks.
 
 ### 2.2.2 - Available resources <a id="sec_2.2.2"></a>
 
@@ -131,6 +134,7 @@ reason, the resources (CPUs, RAM) that can be requested for each node through th
 - **sd nodes**: CPUs: 52 cores. RAM: 182 GB
 - **bl nodes**: CPUs: 128 cores. RAM: 1855 GB
 - **sr nodes**: CPUs: 128 cores. RAM: 439 GB
+- **bc nodes**: CPUs: 256 cores. RAM: 683 GB
 - **exa (GPU) nodes**: CPUs: 128 cores. RAM: 878 GB
 
 <span style="color: red"> IMPORTANT </span>: The resources of the Exa nodes are distributed among the 8 GPUs of each 
@@ -428,6 +432,7 @@ assigned the same name as the SBATCH script.
 is assigned
 - `##SBATCH --constraint=sd`: &nbsp; This is so that the job can only enter the sd (Intel) nodes.
 - `##SBATCH --constraint=sr`: &nbsp; This is so that the job can only enter the sr (AMD) nodes.
+- `##SBATCH --constraint=bc`: &nbsp; This is so that the job can only enter the bc (AMD) nodes.
 - `##SBATCH --gres=gpu:1`: &nbsp; This is for requesting GPUs. First the statements must be commented with "--constraint". The 
 number at the end refers to how many GPUs are being requested. 
 - `##SBATCH --array=1-100`: &nbsp; This is for using the array jobs. It will be explained in section 
@@ -623,6 +628,7 @@ that could help you in this tasks. Feel free to contact us if you have any quest
 #SBATCH --mem=2gb
 
 # The available nodes are:
+#     AMD nodes with 256 cores and 683GB of usable RAM
 #     AMD nodes with 128 cores and 1800GB of usable RAM
 #     AMD nodes  with 128 cores and 439GB of usable RAM
 #     Intel nodes with 52  cores and 187GB of usable RAM
