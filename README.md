@@ -628,6 +628,7 @@ that could help you in this tasks. Feel free to contact us if you have any quest
 #SBATCH --mem=2gb
 
 # The available nodes are:
+#     AMD nodes with 256 cores and 683GB of usable RAM
 #     AMD nodes with 128 cores and 1800GB of usable RAM
 #     AMD nodes  with 128 cores and 439GB of usable RAM
 #     Intel nodes with 52  cores and 187GB of usable RAM
