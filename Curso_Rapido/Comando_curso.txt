@@ -1,0 +1,40 @@
+# Aquí os dejo los comandos:
+module avail | grep -i pytorch
+module load pytorch/2.2.0
+module unload pytorch/2.2.0
+module purge
+
+Aquí os dejo los comandos:
+# Mandar un trabajo:
+sbatch nombre_fichero
+# Ver cola
+squeue
+# Cancelar trabajo enviado
+scancel id_trabajo
+# El ID lo podeis sacar con squeue
+
+# Podeis encontrar ficheros de ejemplo para mandar el sistema de colas (con y sin arrayjobs, y para pedir GPU) en la sección 4 de nuestra documentación:
+https://www.scbi.uma.es/site/scbi/documentation
+
+Aquí os dejo los comandos:
+# Mandar un trabajo:
+sbatch nombre_fichero
+# Ver cola
+squeue
+# Cancelar trabajo enviado
+scancel id_trabajo
+# El ID lo podeis sacar con squeue
+
+Para entrar con Xwindows y poder ver las imagenes con el comando "okular", hay que entrar a Picasso con "ssh -X user@picasso.scbi.uma.es" (poniendo cada uno su usuario)
+
+# Comando para ver la eficiencia
+seff id_trabajo
+# El id se puede sacar con el squeue o del nombre de los ficheros de salida .out y .err
+
+# Podeis ver el numero de ficheros dentro de una carpeta con el comando
+count_files
+
+# Comando para ver las GPUs libres
+free_gpus.sh
+
+Para cualquier cosa: soporte@scbi.uma.es
