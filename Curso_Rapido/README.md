@@ -31,7 +31,7 @@ En España hay una serie de infraestructuras públicas denominadas **ICTS (Infra
 
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/mapa_ICTS.jpg" align=center width='500px'/>
+<img src="./Figuras/mapa_ICTS.jpg" align=center width='800px'/>
 <center>Mapa de las ICTS en España.</center>
 </center></figure>
 
@@ -39,7 +39,7 @@ Un ejemplo muy conocido de este tipo de infraestructuras son los famosos telesco
 
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/mapa_RES.png" align=center width='500px'/>
+<img src="./Figuras/mapa_RES.png" align=center width='800px'/>
 <center>Mapa de las Red Española de Supercomputación (RES).</center>
 </center></figure>
 
@@ -47,7 +47,7 @@ La RES está conformada por una serie de "nodos", es decir, una serie de **centr
 
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/RES_grafica.png" align=center width='500px'/>
+<img src="./Figuras/RES_grafica.png" align=center width='800px'/>
 <center>Gráfica de la potencia de los diferentes nodos de la RES.</center>
 </center></figure>
 
@@ -55,7 +55,7 @@ El SCBI también está inmerso en Computación Cuántica a través del proyecto 
 
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/Quantum.png" align=center width='500px'/>
+<img src="./Figuras/Quantum.png" align=center width='800px'/>
 </center></figure>
 
 
@@ -86,7 +86,7 @@ Otra opción sería usar un software dedicado a las conexiones ssh con servidore
 <a id='mobaXterm-ssh.png'></a>
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/mobaXterm-ssh.png" align=center width='500px'/>
+<img src="./Figuras/mobaXterm-ssh.png" align=center width='800px'/>
 </center></figure>
 
 
@@ -125,7 +125,7 @@ donde
 En Windows podemos abrir un PowerShell en una carpeta si dentro de ella pulsamos `Shift + Boton derecho del ratón`. De esta forma se desplegará un menú con opciones adiciones, entre ellas la de *Abrir un power shell aquí*.
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/Abrir_powershell.jpeg" align=center width='500px'/>
+<img src="./Figuras/Abrir_powershell.jpeg" align=center width='800px'/>
 <center>Abrir un PowerShell en una carpeta en Windows</center>
 </center></figure>
 </div>
@@ -161,7 +161,7 @@ Donde USER debe de sustituirse por el usuario correspondiente.
 
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/sftp_Ubuntu.png" align=center width='500px'/>
+<img src="./Figuras/sftp_Ubuntu.png" align=center width='800px'/>
 <center>Entrar en Picasso mediante el explorador de archivos de Ubuntu.</center>
 </center></figure>
 
@@ -169,7 +169,7 @@ En otros exploradores de archivos como pueden ser Dolphin (el que trae por defec
 
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/sftp_suse.png" align=center width='500px'/>
+<img src="./Figuras/sftp_suse.png" align=center width='800px'/>
 <center>Entrar en Picasso mediante el explorador de archivos de Ubuntu.</center>
 </center></figure>
 
@@ -180,7 +180,7 @@ Picasso consta de diferentes tipos de nodos: unos con más Ram, otro con más co
 
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/Hardware_Picasso_Nodos_2024.png" align=center width='500px'/>
+<img src="./Figuras/Hardware_Picasso_Nodos_2024.png" align=center width='800px'/>
 <center>Resursos Hardware de Picasso</center>
 </center></figure>
 
@@ -236,7 +236,7 @@ quota
 Cuando se haya sobrepasado alguna de las cuotas, aparecerá un mensaje a la entrada de Picasso avisando. Este mensaje puede nuevamente volver a ver usando el comando `quota`
 <figure><center>
 <a id='fig_ref'></a>
-<img src="./Figuras/quota.jpg" align=center width='500px'/>
+<img src="./Figuras/quota.jpg" align=center width='800px'/>
 <center>Ejemplo de mensaja de cuota superada</center>
 </center></figure>
 
