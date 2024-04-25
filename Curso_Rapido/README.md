@@ -7,7 +7,9 @@ Autores:
 
 Para cualquier duda, contactar con soporte@scbi.uma.es
 
-Video explicativos sobre el curso [aquí](https://www.scbi.uma.es/web/rafael/curso_rapido_picasso_ok.mp4)
+Video explicativos sobre el curso [aquí](https://www.scbi.uma.es/web/rafael/curso_rapido_picasso_ok.mp4).
+
+Puede verse más información sobre el uso de Picasso en nuestra [Documentación](https://www.scbi.uma.es/site/scbi/documentation)
 
 **Añadir logos**
 
@@ -21,8 +23,7 @@ Video explicativos sobre el curso [aquí](https://www.scbi.uma.es/web/rafael/cur
 - **[6 - Software](#sec_software)**
 - **[7 - Sistema de colas](#sec_Sistema_de_colas)**
 - **[8 - Array jobs](#sec_array_jobs)**
-- **[9 - Selección de recursos](#sec_seleccion_de_recursos)**
-- **[10 - Usando GPUs](#sec_usando_GPUs)**
+- **[9 - Usando GPUs](#sec_usando_GPUs)**
 
 <a id='sec_Intro'></a>
 ## 1. Introducción
@@ -32,7 +33,6 @@ En España hay una serie de infraestructuras públicas denominadas **ICTS (Infra
 <figure><center>
 <a id='fig_ref'></a>
 <img src="./Figuras/mapa_ICTS.jpg" align=center width='800px'/>
-<center>Mapa de las ICTS en España.</center>
 </center></figure>
 
 Un ejemplo muy conocido de este tipo de infraestructuras son los famosos telescopios y observatorios astronómicos situados en Canarias. Si nos centramos más en el ámbito andaluz, tenemos la *Reserva Biológica de Doñana*, el *Observatorio Astronómico de Calor Alto* o la que nos compete en este curso: la **Red Española de Supercomputación (RES)** a traves del nodo **Picasso**.
@@ -40,7 +40,6 @@ Un ejemplo muy conocido de este tipo de infraestructuras son los famosos telesco
 <figure><center>
 <a id='fig_ref'></a>
 <img src="./Figuras/mapa_RES.png" align=center width='800px'/>
-<center>Mapa de las Red Española de Supercomputación (RES).</center>
 </center></figure>
 
 La RES está conformada por una serie de "nodos", es decir, una serie de **centros de supercomputación** repartidos por toda España. El SCBI con su supercomputador Picasso, con sus 40.000 núcleos, se situa como el **segundo nodo más potente de RES**, solo superado por el ampliamente conocido Marenostrum, situado en el BSC (Barcelona Supercomputer Center).
@@ -48,7 +47,6 @@ La RES está conformada por una serie de "nodos", es decir, una serie de **centr
 <figure><center>
 <a id='fig_ref'></a>
 <img src="./Figuras/RES_grafica.png" align=center width='800px'/>
-<center>Gráfica de la potencia de los diferentes nodos de la RES.</center>
 </center></figure>
 
 El SCBI también está inmerso en Computación Cuántica a través del proyecto QuantumSpain.
@@ -126,7 +124,6 @@ En Windows podemos abrir un PowerShell en una carpeta si dentro de ella pulsamos
 <figure><center>
 <a id='fig_ref'></a>
 <img src="./Figuras/Abrir_powershell.jpeg" align=center width='800px'/>
-<center>Abrir un PowerShell en una carpeta en Windows</center>
 </center></figure>
 </div>
 
@@ -162,7 +159,6 @@ Donde USER debe de sustituirse por el usuario correspondiente.
 <figure><center>
 <a id='fig_ref'></a>
 <img src="./Figuras/sftp_Ubuntu.png" align=center width='800px'/>
-<center>Entrar en Picasso mediante el explorador de archivos de Ubuntu.</center>
 </center></figure>
 
 En otros exploradores de archivos como pueden ser Dolphin (el que trae por defecto OpenSuse con el escritorio KDE), simplemente hay escribir la sentencia anterior en la linea de la ruta
@@ -170,7 +166,6 @@ En otros exploradores de archivos como pueden ser Dolphin (el que trae por defec
 <figure><center>
 <a id='fig_ref'></a>
 <img src="./Figuras/sftp_suse.png" align=center width='800px'/>
-<center>Entrar en Picasso mediante el explorador de archivos de Ubuntu.</center>
 </center></figure>
 
 <a id='sec_recursos_hardware'></a>
@@ -181,7 +176,6 @@ Picasso consta de diferentes tipos de nodos: unos con más Ram, otro con más co
 <figure><center>
 <a id='fig_ref'></a>
 <img src="./Figuras/Hardware_Picasso_Nodos_2024.png" align=center width='800px'/>
-<center>Resursos Hardware de Picasso</center>
 </center></figure>
 
 Desde el punto de vista del usuario, no hay que preocuparse ni pensar el el tipo de nodos de Picasso. Como veremos en la sección [7. Sistema de colas](#sec_Sistema_de_colas), el usuario solo tiene que pedirle al sistema la RAM, el número de cores, el tiempo de ejecución y poco más, y es el sistema el que se carga de asignarle los recursos. Aquí lo único que tenemos que tener es que hay los nodos de más RAM o más cores son escasos en comparación con el resto, así que si se piden **más de 439GB de RAM** o **más de 128 cores por nodo**, los trabajos tardarán más en entrar a ejecución. 
@@ -237,7 +231,6 @@ Cuando se haya sobrepasado alguna de las cuotas, aparecerá un mensaje a la entr
 <figure><center>
 <a id='fig_ref'></a>
 <img src="./Figuras/quota.jpg" align=center width='800px'/>
-<center>Ejemplo de mensaja de cuota superada</center>
 </center></figure>
 
 Como podemos ver en a imagen, hay un cuota de **espacio** (en GB o TB) y otra de **número de ficheros**. Vemos además que hay dos tipos de cuotas:
@@ -268,10 +261,47 @@ Para descargar todos los modulos
 module purge
 ```
 
-<a id='sec_Sistema_de_colas'></a>
-## 7. Sistema de colas
+<a id='sec_Nociones_de_paralelismo'></a>
+## 7. Nociones de paralelismo
 
-### 7.1. Archivo de envio (simple)
+Uno de los grandes potenciales de un superordenador es la capacidad de ejecutar procesos con un paralelismo masivo (cientos o miles de ejecuciones en paralelo). Debido a esto, merece la pena hablar un poco sobre ciertas nociones de **paralelismo** en los programas. Cuando hablamos de paralelismo de un programa, hablamos de la capacidad que tiene un programa de ejecutar ciertas partes del mismo de forma simultanea en vez de secuencial. 
+
+Cuando hablamos de parlelismo, hay un principio famoso conocido como **Ley de Amdahl** que no dice la aceleración que conseguieremos en un proceso al aumentar el número de cores, dependiendo de como de grande sea la parte paralela del programa (un programa puede ter partes que se tiene que ejecutar si o si de forma secuencial y partes que se pueden paralelizar). 
+
+<figure><center>
+<a id='fig_ref'></a>
+<img src="./Figuras/Ley_amdahl.png" align=center width='800px'/>
+</center></figure>
+
+Esta ley lo que nos hace ver es que las partes secuenciales de un programa son las que al final dictan el máximo incremento de velocidad se puede conseguir mendiante el paralelismo. 
+
+Por ejemplo, la linea azul representa un programa cuyo 50% es paralelizable. En la gráfica vemos que con 16 cores ya hemos alcanza el máximo de incremento de velocidad. A partir de ahí, aumentar el número de cores es inútil. Vemos también que el incremento máximo de velocidad en este caso es de 2, es decir, el programa tarda la mitad. Esto es debido a que mediante el paralelismo ese 50% paralelo del programa se hace super rápico, mientras que el 50% secuancial sigue durando lo mismo.
+
+Veamos otro ejemplo: en este caso tenemos un procesamiento de un fichero que tarda **100 minutos** sin paralelismo. De estos 100 minutos, un **10% es secuencial** y un **90% puede paralelizarse**.
+<figure><center>
+<a id='fig_ref'></a>
+<img src="./Figuras/Paralelismo_1.png" align=center width='800px'/>
+</center></figure>
+
+Vemos que el duplicar el número de cores, el tiempo pasa de 100 a 55 minutos (no se reduce a la mistad). Veamos que pasa al aumentar más los cores:
+
+<figure><center>
+<a id='fig_ref'></a>
+<img src="./Figuras/Paralelismo_2.png" align=center width='800px'/>
+</center></figure>
+
+Cuenado vamos a 4 cores, el tiempo pasa a ser de 28 minutos. Si nos vamos ya a 10 cores, el tiempo pasa a ser de 19 minutos. Si todo fuera paralelo, con 10 cores debería tardar 10 minutos. Sin embargo, como tenemos 10 minutos secuanciales, sabemos que este programa va a tardar **como mínimo 10 minutos**.
+
+Siguiendo, con este ejemplo (el procesamiento de un fichero donde el 10% del trabajo es secuenacial y el 90% paralelo), ahora se planetean las siguientes preguntas: 
+- ¿Cuántos cores es el óptimo para procesar 10 ficheros de este estilo?
+- ¿Será lo óptimo usar todos los cores para cada trabajo?
+
+
+
+<a id='sec_Sistema_de_colas'></a>
+## 8. Sistema de colas
+
+### 8.1. Archivo de envio (simple)
 
 Para acceder a todos los recursos de Picasso hay que usar el **sistema de colas**. Cuando se accede a Picasso, se accede a uno de los nodos del superordenador. Al resto de nodos no se puede acceder directamente, sino que lo que se hace es enviar los trabajos al sistema de colas. Para ello, se debe de escribir un "archivo de envio" donde se especifican los recursos necesarios, se cargan los módulos necesario y se ejecuta el programa. 
 
@@ -279,6 +309,7 @@ Veamos un ejemplo simple de archivo de envio:
 ```
 #!/usr/bin/env bash
 #SBATCH -J esto_es_un_ejemplo
+#SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=2gb
 #SBATCH --time=10:00:00
@@ -294,10 +325,22 @@ hostname
 
 time ./mi_programa -t $SLURM_CPUS_PER_TASK argumentos  
 ```
+- El `%J` en el nombre de los archivos de salida se sustituye por el id del trabajo, de forma que los ficheros de salida no se pisan unos a otros.
+- El `-t` es porque a algunos software se les tiene que especificar con un argumento el número de cpus (cores) que tiene que usar. A veces esto se hace con `-t numero_de_cores`. En el sistema de colas Slurm, el valor que se pone en `#SBATCH --ntasks=1` se almacena en la variable `$SLURM_CPUS_PER_TASK`, de forma que podemos usar esta variable para decirle al software que use todos los cores reservados.
+- Si el software usa MPI para paralelizar, habría que poner pas tasks en `#SBATCH --ntasks=1` y ejecutar con `mpirun -np $SLURM_NTASKS ejecutable_del_software`
 
-Donde el `%J` en el nombre de los archivos de salida se sustituye por el id del trabajo, de forma que los ficheros de salida no se pisan unos a otros.
+Puede generarse una plantilla de fichero de envio (con comentarios explicativos) usando el comando 
+```
+gen_sbatch_file script_de_envio.sh 1 2gb 2:00:00 'ls -al'
+```
+Si nos fijamos, estamos generando un archivo `script_de_envio.sh` donde se pide:
+- 1 core
+- 2gb de RAM
+- 2 horas de tiempo de ejecución
+- Se ejecuta el comando `ls -al`
+La idea es editar este archivo de plantilla, poniendo los recursos adecuados, cargando los módulos necesarios y poniendo la sentencia de ejecución pertinente.
 
-### 7.2. Envío al sistema de colas
+### 8.2. Envío al sistema de colas
 
 Una vez escrito este fichero, hay que **enviarlo al sistema de colas**. Para ello se usa el comando
 ```
@@ -313,13 +356,69 @@ Puede cancelarse en envio de un trabajo con el comando
 ```
 scancel job_id
 ```
-donde `job_id` se sustituye por el id del trabajo 
+donde `job_id` se sustituye por el id del trabajo. El id se puede obtener con el comando `squeue`
 
 <a id='sec_array_jobs'></a>
-## 8. Array jobs
+## 9. Array jobs
 
-<a id='sec_seleccion_de_recursos'></a>
-## 9. Selección de recursos
+Los ArrayJobs son una forma de mandar varios trabajos simultaneos variando un parámetro. Es decir, se envia un único `script_de_envio.sh` y que se ejecuten varios trabajos en el sistema de colas variando un parámetro. Veamos un ejemplo de archivo de envio de un arrayjob
+```
+#!/usr/bin/env bash
+#SBATCH -J esto_es_un_ejemplo_con_arrays
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=2gb
+#SBATCH --time=10:00:00
+#SBATCH --constraint=cal
+
+# Set output and error files
+#SBATCH --error=ejemplo_array.%A-%a.err
+#SBATCH --output=ejemplo_array.%A-%a.out
+
+#SBATCH --array=1-10
+
+module load software/version
+
+hostname
+echo a procesar el ${SLURM_ARRAY_TASK_ID}
+time ./mi_programa -t $SLURM_CPUS_PER_TASK argumentos_${SLURM_ARRAY_TASK_ID}
+```
+
+Vemos que ha habido 3 cambios:
+- Se ha añadido la linea `#SBATCH --array=1-10`. Esta linea es la que hace que se ejecute un ArrayJob haciendo variar un parametro (en este caso, de 1 a 10). También se puede hacer variar un parámetro entre una lista. Este parámetro puede usarse para hacer después un serie de operaciones matemáticas para pasarle al programa un valor concreto. Por ejemplo, si quieremos hacer simulaciones variando la temperatura entre 273 K y 373 K, de 5 en 5 grados, podemos coger un ArrayJob de la forma `#SBATCH --array=0-10` y calcular la temperatura como `T = 273 + 5*${SLURM_ARRAY_TASK_ID}`.
+
+- Se ha añadido `${SLURM_ARRAY_TASK_ID}` al nombre de un supuesto archivo de argumentos de programa. Esto es solo para ver que el valor que se hace variar se almacena en la variable `${SLURM_ARRAY_TASK_ID}` y puede usarse, por ejemplo, para llamar a diferentes archivos en cada una de las ejecuciones de ArrayJob o para hacer operaciones aritméticas con este valor (ejemplo del parágrafo anterior).
+
+- Se ha cambiado el `%J` por `%A-%a`. Esto es para que los archivos .out y .err de cada uno de los trabajos de ArrayJob tengan un nombre diferente, conteniendo en este nombre el valor de parámetro que variamos (el `%a`). 
+
 
 <a id='sec_usando_GPUs'></a>
 ## 10. Usando GPUs
+
+Vamos a ver ahora como solicitar el uso de GPU en el sistema de colas en Picasso:
+```
+#!/usr/bin/env bash
+#SBATCH --job-name=ejemplo1_gpu
+#SBATCH --time=7-00:0
+#SBATCH --mem=100G
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --gres=gpu:1
+#SBATCH --constraint=dgx
+
+# Set output and error files
+#SBATCH --error=ejemplo.%J.err
+#SBATCH --output=ejemplo.%J.out
+
+
+module load software/version
+
+hostname
+echo a procesar el ${SLURM_ARRAY_TASK_ID}
+time ./mi_programa -t $SLURM_CPUS_PER_TASK argumentos
+```
+
+Los cambios significativos son los siguientes:
+- Se ha añdido la linea donde se especifica el número de GPUs solicitadas: `#SBATCH --gres=gpu:1`
+- Se ha cambiado la constraint: `#SBATCH --constraint=dgx`. (Antes era `cal`, en referencia a que se pedían nodos de cálculo)
+
