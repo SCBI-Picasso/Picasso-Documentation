@@ -61,6 +61,28 @@ El SCBI también está inmerso en Computación Cuántica a través del proyecto 
 <a id='sec_acceso'></a>
 ## 2 - Acceso
 
+El acceso a Picasso de sa usando el protocolo ssh en linea de comando:
+```
+ssh USER@picasso.scbi.uma.es
+```
+Donde USER debe de sustituirse por el usuario correspondiente. Este comando se puede ejecutar en:
+- Un terminal de Linux
+- Un terminal de MacOs
+- Un PowerShell en Windows
+
+Nota: al escribir la contraseña no aparecerá nada en pantalla. Puede desconcertar al principio pero no preocuparse, se está escribiendo igual.
+
+Otra opción sería usar un software dedicado a las conexiones ssh con servidores, como puede ser [MobaXterm](https://mobaxterm.mobatek.net/) o similares. MobaXterm es una buena opción para principiantes que no estén acostumbrados a manejar un terminal, pues este presenta un explorador de ficheros (columana de la izquierda), lo que facilita el moverse entre carpetas y mover archivos entre Picasso y el ordenador local 
+
+Nota: Puedes encontrar una Demo sobre como conectarse con un servidor usando MobaXTerm [aquí](https://mobaxterm.mobatek.net/demo.html)
+
+<div class=\"alert alert-block alert-danger\">
+<b>Nota</b>
+
+Nota: Puedes encontrar una Demo sobre como conectarse con un servidor usando MobaXTerm [aquí](https://mobaxterm.mobatek.net/demo.html)
+</div>
+
+
 <a id='sec_movimiento_ficheros'></a>
 ## 3 - Movimiento de ficheros
 
