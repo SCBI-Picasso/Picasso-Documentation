@@ -22,7 +22,7 @@ Autores:
 - **[10 - Usando GPUs](#sec_usando_GPUs)**
 
 <a id='sec_Intro'></a>
-## 1 - Introducción
+## 1. Introducción
 
 En España hay una serie de infraestructuras públicas denominadas **ICTS (Infraestructuras Ciantifico Técnicas Singulares)**. El objetivo de estas es proveer a los investigadores españoles de  medios competitivos para llevar a cabo investigaciones de vanguardia. 
 
@@ -59,50 +59,97 @@ El SCBI también está inmerso en Computación Cuántica a través del proyecto 
 
 
 <a id='sec_acceso'></a>
-## 2 - Acceso
+## 2. Acceso
 
 El acceso a Picasso de sa usando el protocolo ssh en linea de comando:
 ```
-ssh USER@picasso.scbi.uma.es
+ssh -X USER@picasso.scbi.uma.es
 ```
 Donde USER debe de sustituirse por el usuario correspondiente. Este comando se puede ejecutar en:
 - Un terminal de Linux
 - Un terminal de MacOs
 - Un PowerShell en Windows
 
-Nota: al escribir la contraseña no aparecerá nada en pantalla. Puede desconcertar al principio pero no preocuparse, se está escribiendo igual.
 
-Otra opción sería usar un software dedicado a las conexiones ssh con servidores, como puede ser [MobaXterm](https://mobaxterm.mobatek.net/) o similares. MobaXterm es una buena opción para principiantes que no estén acostumbrados a manejar un terminal, pues este presenta un explorador de ficheros (columana de la izquierda), lo que facilita el moverse entre carpetas y mover archivos entre Picasso y el ordenador local 
-
-Nota: Puedes encontrar una Demo sobre como conectarse con un servidor usando MobaXTerm [aquí](https://mobaxterm.mobatek.net/demo.html)
 
 <div class=\"alert alert-block alert-danger\">
-<b>Nota</b>
+<b>Nota</b>    
 
-Nota: Puedes encontrar una Demo sobre como conectarse con un servidor usando MobaXTerm [aquí](https://mobaxterm.mobatek.net/demo.html)
+Al escribir la contraseña no aparecerá nada en pantalla. Puede desconcertar al principio pero no preocuparse, se está escribiendo igual.
 </div>
 
 
+Otra opción sería usar un software dedicado a las conexiones ssh con servidores, como puede ser [MobaXterm](https://mobaxterm.mobatek.net/) o similares. MobaXterm es una buena opción para principiantes que no estén acostumbrados a manejar un terminal, pues este presenta un explorador de ficheros (columana de la izquierda), lo que facilita el moverse entre carpetas y mover archivos entre Picasso y el ordenador local 
+
+<figure><center>
+<a id='fig_ref'></a>
+<img src="./Figuras/mobaXterm-ssh.png" align=center width='1000px'/>
+</center></figure>
+
+
+<div class=\"alert alert-block alert-danger\">
+<b>Nota</b>    
+
+Puedes encontrar una Demo sobre como conectarse con un servidor usando MobaXTerm [aquí](https://mobaxterm.mobatek.net/demo.html)
+</div>
+
 <a id='sec_movimiento_ficheros'></a>
-## 3 - Movimiento de ficheros
+## 3. Movimiento de ficheros
+
+Para copiar ficheros entre Picasso y el ordenador local tenemos dos opciones:
+- Usar comandos como **rsync** o **scp** en terminal
+- Usar programas externos para abrir un explorador de archivos en Picasso (MobaXTerm, Dolphin en Linux, ...)
+
+### 3.1. El comando scp
+
+### 3.2. El comando rsync
+
+### 3.3. Mover ficheros con MobaXTerm
+
+### 3.4. Otras alternativas 
+
+Hay una gran variedad de softwares que permiten montar un servidor por sftp. Por ejemplo, las distribuciones de Linux el propio explorador de archivos suele dar la opción de hacerlo. 
+
+Por ejemplo, en Ubuntu solo tenemos que abrir el explorador de archivos e ir a *Otras Ubicaciones/Other Locations* y escribir abajo del todo (donde pone *Connect ro Server) la sentencia
+```
+sftp://USER@picasso.scbi.uma.es
+```
+Donde USER debe de sustituirse por el usuario correspondiente. 
+
+<figure><center>
+<a id='fig_ref'></a>
+<img src="./Figuras/mobaXterm-ssh.png" align=center width='1000px'/>
+<center>Entrar en Picasso mediante el explorador de archivos de Ubuntu.</center>
+</center></figure>
+
+En otros exploradores de archivos como pueden ser Dolphin (el que trae por defecto OpenSuse con el escritorio KDE), simplemente hay escribir la sentencia anterior en la linea de la ruta
+
+<figure><center>
+<a id='fig_ref'></a>
+<img src="./Figuras/sftp_suse.png" align=center width='1000px'/>
+<center>Entrar en Picasso mediante el explorador de archivos de Ubuntu.</center>
+</center></figure>
+
+
+
 
 <a id='sec_recursos_hardware'></a>
-## 4 - Recursos hardware
+## 4. Recursos hardware
 
 <a id='sec_sistema_ficheros'></a>
-## 5 - Sistema de ficheros / cuota
+## 5. Sistema de ficheros / cuota
 
 <a id='sec_software'></a>
-## 6 - Software
+## 6. Software
 
 <a id='sec_Sistema_de_colas'></a>
-## 7 - Sistema de colas
+## 7. Sistema de colas
 
 <a id='sec_array_jobs'></a>
-## 8 - Array jobs
+## 8. Array jobs
 
 <a id='sec_seleccion_de_recursos'></a>
-## 9 - Selección de recursos
+## 9. Selección de recursos
 
 <a id='sec_usando_GPUs'></a>
-## 10 - Usando GPUs
+## 10. Usando GPUs
