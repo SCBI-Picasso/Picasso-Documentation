@@ -296,7 +296,16 @@ Siguiendo, con este ejemplo (el procesamiento de un fichero donde el 10% del tra
 - ¿Cuántos cores es el óptimo para procesar 10 ficheros de este estilo?
 - ¿Será lo óptimo usar todos los cores para cada trabajo?
 
+<figure><center>
+<a id='fig_ref'></a>
+<img src="./Figuras/Paralelismo_3.png" align=center width='800px'/>
+</center></figure>
 
+En las gráficas anteriores vemos dos opciones de plantear el cálculo, ambas usando 10 cores, pero vemos que una tarda casi el doble que la otra:
+- La primera opción es ejecutar los 10 análisis secuencialmente, paralelizando cada análisis.
+- La segunda opción es ejecutar los 10 analisis en paralelo, sin aparalelizar en sí cada uno de los análisis.
+
+Lo que observamos es que en este caso particular, es más eficiente las segunda opción, pues es cuando tenemos todos lo cores al máximo de uso todo el tiempo. En la primera opción, como el análisis tiene una parte secuencial, en cada uno de los análisis vamos a tener durante un tiempo 9 de los 10 cores sin hacer nada.
 
 <a id='sec_Sistema_de_colas'></a>
 ## 8. Sistema de colas
