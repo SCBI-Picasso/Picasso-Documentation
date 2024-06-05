@@ -21,9 +21,10 @@ You can find more information about the use of Picasso in our [Documentation](ht
 - **[4 - Hardware Resources](#sec_recursos_hardware)**
 - **[5 - File System / Quota](#sec_sistema_ficheros)**
 - **[6 - Software](#sec_software)**
-- **[7 - Queue System](#sec_Sistema_de_colas)**
-- **[8 - Array Jobs](#sec_array_jobs)**
-- **[9 - Using GPUs](#sec_usando_GPUs)**
+- **[7 - Notions of Parallelism](#sec_Nociones_de_paralelismo)**
+- **[8 - Queue System](#sec_Sistema_de_colas)**
+- **[9 - Array Jobs](#sec_array_jobs)**
+- **[10 - Using GPUs](#sec_usando_GPUs)**
 
 <a id='sec_Intro'></a>
 ## 1. Introduction
