@@ -21,9 +21,10 @@ Puede verse más información sobre el uso de Picasso en nuestra [Documentación
 - **[4 - Recursos hardware](#sec_recursos_hardware)**
 - **[5 - Sistema de ficheros / cuota](#sec_sistema_ficheros)**
 - **[6 - Software](#sec_software)**
-- **[7 - Sistema de colas](#sec_Sistema_de_colas)**
-- **[8 - Array jobs](#sec_array_jobs)**
-- **[9 - Usando GPUs](#sec_usando_GPUs)**
+- **[7 - Nociones de paralelismo](#sec_Nociones_de_paralelismo)**
+- **[8 - Sistema de colas](#sec_Sistema_de_colas)**
+- **[9 - Array jobs](#sec_array_jobs)**
+- **[10 - Usando GPUs](#sec_usando_GPUs)**
 
 <a id='sec_Intro'></a>
 ## 1. Introducción
